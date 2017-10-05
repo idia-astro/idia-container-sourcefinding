@@ -11,7 +11,6 @@ export LC_ALL=C
 
 %post
 	# Installation of the KERN2 packages
-	export LC_ALL=C
 	apt-get update -y 
 	apt-get install -y wget vim apt-utils 
 	add-apt-repository -s ppa:kernsuite/kern-2
@@ -28,7 +27,7 @@ export LC_ALL=C
 
 	# Install pip and ipykernel for use with jupyter hub. 
 	apt-get install -y python-pip
-	pip install ipykernel==5.0
+	pip install IPython==5.0 ipykernel
 
 	# Additional packages installed via pip can be added here.
 	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro
