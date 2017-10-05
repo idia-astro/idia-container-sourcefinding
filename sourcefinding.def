@@ -28,7 +28,7 @@ export LC_ALL=C
 
 	# Install pip and ipykernel for use with jupyter hub. 
 	apt-get install -y python-pip
-	pip install ipykernel
+	pip install ipykernel==5.0
 
 	# Additional packages installed via pip can be added here.
 	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro
