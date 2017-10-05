@@ -11,7 +11,7 @@ export LC_ALL=C
 
 %post
 	# Installation of the KERN2 packages
-
+	export LC_ALL=C
 	apt-get update -y 
 	apt-get install -y wget vim apt-utils 
 	add-apt-repository -s ppa:kernsuite/kern-2
