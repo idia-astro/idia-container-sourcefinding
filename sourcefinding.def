@@ -10,9 +10,15 @@ export SOFTWARE_PATH=/software
 export LC_ALL=C
 
 %post
+	# Create Installation Directories and export paths. This is needed as part of post.
+	# %environment scriptlet does not define these paths during %post, only after.  
+	mkdir -p /software/ /installer
+        export INSTALLER_PATH=/installer
+        export SOFTWARE_PATH=/software
+
 	# Installation of the KERN2 packages
 	apt-get update -y 
-	apt-get install -y wget vim apt-utils 
+	apt-get install -y wget vim apt-utils git
 	add-apt-repository -s ppa:kernsuite/kern-2
         apt-add-repository multiverse
         apt-add-repository restricted
@@ -29,10 +35,16 @@ export LC_ALL=C
 	apt-get install -y python-pip
 	pip install IPython==5.0 ipykernel
 
+	# Python3 Pip install and Python modules 
+	apt-get install -y python3-pip
+	pip3 install scipy astropy configobj sqlalchemy
+
 	# Additional packages installed via pip can be added here.
 	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro
 
 	# Install Java runtime environment and accept the license agreement via debconf
+	add-apt-repository -y ppa:webupd8team/java
+	apt-get update
 	echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
 	echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections
 	apt-get install -y oracle-java8-installer
@@ -85,6 +97,7 @@ export LC_ALL=C
 	rm cigale-v0.11.0.tar.gz
 	cd cigale-*
 	python3 setup.py build
+	python3 setup.py install 
 	
 	# GPz - https://github.com/OxfordML/GPz
 	git clone https://github.com/OxfordML/GPz $SOFTWARE_PATH/GPz
