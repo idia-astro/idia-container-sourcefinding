@@ -37,7 +37,7 @@ export LC_ALL=C
 
 	# Python3 Pip install and Python modules 
 	apt-get install -y python3-pip
-	pip3 install scipy astropy configobj sqlalchemy
+	pip3 install python3-setuptools scipy astropy configobj sqlalchemy
 
 	# Additional packages installed via pip can be added here.
 	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro
