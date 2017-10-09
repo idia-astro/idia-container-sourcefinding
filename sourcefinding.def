@@ -36,8 +36,8 @@ export LC_ALL=C
 	pip install IPython==5.0 ipykernel
 
 	# Python3 Pip install and Python modules 
-	apt-get install -y python3-pip
-	pip3 install python3-setuptools scipy astropy configobj sqlalchemy
+	apt-get install -y python3-pip python3-setuptools
+	pip3 install scipy astropy configobj sqlalchemy
 
 	# Additional packages installed via pip can be added here.
 	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro
@@ -65,23 +65,23 @@ export LC_ALL=C
 	# Install Astrometry 
 	cd $INSTALLER_PATH
 	apt-get install -y libcairo2-dev libnetpbm10-dev netpbm libpng12-dev libjpeg-dev python-pyfits python-dev zlib1g-dev libbz2-dev
- 	wget http://astrometry.net/downloads/astrometry.net-latest.tar.gz
-	tar xfvz astrometry.net-*
+ 	wget http://astrometry.net/downloads/astrometry.net-latest.tar.gz -O - | tar -xz
+	# tar xfvz astrometry.net-*
 	cd astrometry.net-*
 	make && make py && make extra && make install 		
 
 	# Image mosaicing & source extraction software : scamp, sextractor, swarp at https://www.astromatic.net
 	cd $INSTALLER_PATH
 	apt-get install -y libfftw3-dev libblas-dev libatlas-base-dev libplplot-dev libshp-dev
-	wget http://cdsarc.u-strasbg.fr/ftp/pub/sw/cdsclient.tar.gz
-	tar xfvz cdsclient.tar.gz
+	wget http://cdsarc.u-strasbg.fr/ftp/pub/sw/cdsclient.tar.gz -O - | tar -xz
+	# tar xfvz cdsclient.tar.gz
 	cd $INSTALLER_PATH/cdsclient-*
 	./configure && make && make install 
 	cd $INSTALLER_PATH
-	wget https://www.astromatic.net/download/sextractor/sextractor-2.19.5.tar.gz
-	wget https://www.astromatic.net/download/scamp/scamp-2.0.4.tar.gz
-	wget https://www.astromatic.net/download/swarp/swarp-2.38.0.tar.gz
-	tar xfvz sextractor-2.19.5.tar.gz && tar xfvz scamp-2.0.4.tar.gz && tar xfvz swarp-2.38.0.tar.gz
+	wget https://www.astromatic.net/download/sextractor/sextractor-2.19.5.tar.gz -O - | tar -xz
+	wget https://www.astromatic.net/download/scamp/scamp-2.0.4.tar.gz -O - | tar -xz
+	wget https://www.astromatic.net/download/swarp/swarp-2.38.0.tar.gz -O - | tar -xz
+	# tar xfvz sextractor-2.19.5.tar.gz && tar xfvz scamp-2.0.4.tar.gz && tar xfvz swarp-2.38.0.tar.gz
 	
 	cd $INSTALLER_PATH/scamp-*
 	./configure --with-atlas-incdir=/usr/include/atlas/ && make && make install 
@@ -91,13 +91,14 @@ export LC_ALL=C
 	./configure && make && make install
 
 	# SED fitting software, e.g. CIGALE : http://cigale.lam.fr
+	pip3 install astropy numpy scipy sqlalchemy matplotlib configobj		
 	cd $INSTALLER_PATH
 	wget -O $INSTALLER_PATH/cigale-v0.11.0.tar.gz https://gitlab.lam.fr/cigale/cigale/repository/archive.tar.gz?ref=v0.11.0
  	tar xfvz cigale-v0.11.0.tar.gz
 	rm cigale-v0.11.0.tar.gz
 	cd cigale-*
 	python3 setup.py build
-	python3 setup.py install 
+	python3 setup.py develop
 	
 	# GPz - https://github.com/OxfordML/GPz
 	git clone https://github.com/OxfordML/GPz $SOFTWARE_PATH/GPz
