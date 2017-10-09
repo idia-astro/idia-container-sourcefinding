@@ -6,7 +6,7 @@ DEF=sourcefinding.def
 all: bootstrap
 
 ${IMAGE}:
-	sudo singularity create -s 25000 ${IMAGE}
+	sudo singularity create -s 28000 ${IMAGE}
 bootstrap: ${IMAGE}
 	sudo singularity bootstrap ${IMAGE} ${DEF}
 upgrade:
