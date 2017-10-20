@@ -43,11 +43,11 @@ export LC_ALL=C
 	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro
 
 	# Install Java runtime environment and accept the license agreement via debconf
-	add-apt-repository -y ppa:webupd8team/java
-	apt-get update
-	echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
-	echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections
-	apt-get install -y oracle-java8-installer
+	# add-apt-repository -y ppa:webupd8team/java
+	# apt-get update
+	# echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
+	# echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections
+	# apt-get install -y oracle-java8-installer
  
 	# Install Tractor - http://thetractor.org/
 	cd $INSTALLER_PATH
@@ -100,13 +100,6 @@ export LC_ALL=C
 	python3 setup.py build
 	python3 setup.py develop
 
-	# PyBDSF - https://github.com/lofar-astron/PyBDSF
-	apt-get install -y libboost-python-dev
- 	cd $INSTALLER_PATH/
-	git clone https://github.com/lofar-astron/PyBDSF.git
-	cd PyBDSF*
-	python setup.py install 
- 	
 	# GPz - https://github.com/OxfordML/GPz
 	git clone https://github.com/OxfordML/GPz $SOFTWARE_PATH/GPz
 
