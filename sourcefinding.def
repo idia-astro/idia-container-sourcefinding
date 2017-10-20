@@ -121,7 +121,7 @@ export LC_ALL=C
 if [ $# -eq 0 ]; then
 	echo "The following Python modules are installed in this image:"
         pip freeze
-        echo "Example usage: source-finding.img [command] [args] [options]"  
+        echo "Example usage: sourcefinding.img [command] [args] [options]"  
 else
         exec "$@"
 fi
