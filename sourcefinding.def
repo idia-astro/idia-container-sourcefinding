@@ -90,6 +90,14 @@ export LC_ALL=C
 	cd $INSTALLER_PATH/swarp-*
 	./configure && make && make install
 
+	# Installation of PyBDSF	
+	apt-get install -y libboost-python-dev gfortran
+	pip install --upgrade setuptools numpy scipy pyfits pywcs
+	cd $INSTALLER/
+	git clone https://github.com/lofar-astron/PyBDSF.git
+	cd PyB*
+	python setup.py install
+	
 	# SED fitting software, e.g. CIGALE : http://cigale.lam.fr
 	pip3 install astropy numpy scipy sqlalchemy matplotlib configobj		
 	cd $INSTALLER_PATH
