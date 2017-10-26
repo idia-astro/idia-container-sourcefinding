@@ -40,7 +40,7 @@ export LC_ALL=C
 	pip3 install scipy astropy configobj sqlalchemy
 
 	# Additional packages installed via pip can be added here.
-	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro
+	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro numba
 
 	# Install Java runtime environment and accept the license agreement via debconf
 	# add-apt-repository -y ppa:webupd8team/java
