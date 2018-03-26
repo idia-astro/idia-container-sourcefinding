@@ -12,22 +12,27 @@ export PATH=$PUMA_DIR/scripts:$PATH
 export SOFIA_MODULE_PATH="/installer/SoFiA/build/lib.linux-x86_64-2.7"
 export SOFIA_PIPELINE_PATH="/installer/SoFiA/sofia_pipeline.py"
 export PATH="$PATH:/installer/SoFiA:/installer/SoFiA/gui"
+export PATH=/software/pink/pink-2018/bin:$PATH
 export LC_ALL=C
+
+%setup
+cp ../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
+
 
 %post
 	# Create Installation Directories and export paths. This is needed as part of post.
 	# %environment scriptlet does not define these paths during %post, only after.
 	mkdir -p /software/ /installer
-    export INSTALLER_PATH=/installer
-    export SOFTWARE_PATH=/software
+  export INSTALLER_PATH=/installer
+  export SOFTWARE_PATH=/software
 
 	# Installation of the KERN2 packages
 	apt-get update -y
 	apt-get install -y wget vim apt-utils git
 	add-apt-repository -s ppa:kernsuite/kern-2
 	add-apt-repository ppa:jonathonf/python-3.6
-    apt-add-repository multiverse
-    apt-add-repository restricted
+  apt-add-repository multiverse
+  apt-add-repository restricted
 	apt-get update -y
 
 	apt-get install -y cassbeam python-qwt5-qt4 python-qwt5-doc tempo purify casacore-dev casacore-doc casacore-tools casarest casacore-data meqtrees-timba python-purr python-tigger python-meqtrees-cattery python-owlcat python-kittens python-pyxis python-meqtrees-timba rpfits meqtrees libmeqtrees-timba0 aoflagger wsclean sagecal mt-imager oskar python-casacore python-attrdict python-montblanc python-pymoresane obit parseltongue libcasasynthesis-dev libcasasynthesis1 libspdlog-dev libcasa-casa2 libcasa-coordinates2 libcasa-derivedmscal2 libcasa-fits2 libcasa-images2 libcasa-lattices2 libcasa-meas2 libcasa-measures2 libcasa-mirlib2 libcasa-ms2 libcasa-msfits2 libcasa-python2 libcasa-python3-2 libcasa-scimath-f2 libcasa-scimath2 libcasa-tables2 python3-casacore psrcat presto tempo2 texlive-fonts-recommended dialog
@@ -39,15 +44,16 @@ export LC_ALL=C
 
 	# Install pip and ipykernel for use with jupyter hub.
 	apt-get install -y python-pip
+	pip install --upgrade pip
 	pip install IPython==5.0 ipykernel
 
 	# Python3 Pip install and Python modules
 	apt-get install -y python3-pip python3-setuptools
 	pip3 install --upgrade pip
-	pip3 install scipy astropy configobj sqlalchemy hips scikit-image
+	pip3 install scipy astropy configobj sqlalchemy hips
 
 	# Additional packages installed via pip can be added here.
-	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro numba WCSAxes docopt mpld3 astroML astroML_addons healpy pyvo nway sep theano tensorflow keras h5py scikit-plot montage-wrapper
+	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro numba WCSAxes docopt mpld3 astroML astroML_addons healpy pyvo nway sep theano tensorflow keras h5py scikit-plot montage-wrapper emcee scikit-image corner kapteyn pyspark
 
 	# Install Java runtime environment and accept the license agreement via debconf
 	 add-apt-repository -y ppa:webupd8team/java
@@ -59,7 +65,7 @@ export LC_ALL=C
 	# Install Tractor - http://thetractor.org/
 	cd $INSTALLER_PATH
 	apt-get install -y swig
-	pip install fitsio emcee somoclu
+	pip install fitsio somoclu
 	wget -O - https://raw.github.com/dstndstn/tractor/master/checkout.sh | bash
 	cd tractor
 	make && python setup.py install
@@ -162,12 +168,53 @@ export LC_ALL=C
 	cd SciScript-Python/py3
 	python3 setup.py install
 
-
 	# GPz - https://github.com/OxfordML/GPz
 	git clone https://github.com/OxfordML/GPz $SOFTWARE_PATH/GPz
 
+	#Intsallation of lsst
+	cd $INSTALLER_PATH
+	mkdir -p lsst_stack
+	cd lsst_stack
+	curl -OL https://raw.githubusercontent.com/lsst/lsst/14.0/scripts/newinstall.sh
+	bash newinstall.sh -ct
+	source loadLSST.bash
+
+	#Installation of Anaconda
+	cd $INSTALLER_PATH
+	wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+	bash Anaconda3-5.0.1-Linux-x86_64.sh -b -p /anaconda
+	rm Anaconda3-5.0.1-Linux-x86_64.sh
+	echo 'export PATH="/anaconda3/bin:$PATH"' >> ~/.bashrc
+	source .bashrc
+	conda update conda
+
+	#Anaconda install related packages
+	conda install -c astropy astroquery astroplan ccdproc  ginga  glueviz  photutils  pydl  pyregion  regions  reproject  specutils
+
+	#Installation of eazy-photoz
+	git clone https://github.com/gbrammer/eazy-photoz.git eazy-photoz
+	cd eazy-photoz/src
+	make
+
+	#Installation of Mega-physics
+	wget http://www.iap.fr/magphys/ewExternalFiles/CB07_libraries.tar.gz
+	tar -xzf CB07_libraries.tar.gz
+
+	# Installation of PINK
+	apt-get install -y doxygen wget vim apt-utils gcc make cmake build-essential
+	mv /pink-180313.tgz?dl=0 /install
+	cd /install
+	tar xfv pink-180313.tgz?dl=0
+	cd pink/pink-2018
+	#remove the already build folder from mattia
+	rm -rf build
+	mkdir build
+	cd build
+	cmake -DCMAKE_INSTALL_PREFIX=/install/pink/pink-2018 ..
+	make -j 2
+
 	# Create /users to bind home directories into the container.
-    mkdir -p /users /scratch /data
+  mkdir -p /users /scratch /data
 
 	# Cleanup the container
 	apt-get clean
