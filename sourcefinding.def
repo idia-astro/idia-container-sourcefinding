@@ -16,7 +16,7 @@ export PATH=/software/pink/pink-2018/bin:$PATH
 export LC_ALL=C
 
 %setup
-cp ../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
+cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 
 
 %post
