@@ -202,15 +202,15 @@ cp ../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 
 	# Installation of PINK
 	apt-get install -y doxygen wget vim apt-utils gcc make cmake build-essential
-	mv /pink-180313.tgz?dl=0 /install
-	cd /install
+	mv /pink-180313.tgz?dl=0 /INSTALLER_PATH
+	cd /vINSTALLER_PATH
 	tar xfv pink-180313.tgz?dl=0
 	cd pink/pink-2018
 	#remove the already build folder from mattia
 	rm -rf build
 	mkdir build
 	cd build
-	cmake -DCMAKE_INSTALL_PREFIX=/install/pink/pink-2018 ..
+	cmake -DCMAKE_INSTALL_PREFIX=/INSTALLER_PATH/pink/pink-2018 ..
 	make -j 2
 
 	# Create /users to bind home directories into the container.
