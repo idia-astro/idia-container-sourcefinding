@@ -13,7 +13,12 @@ export SOFIA_MODULE_PATH="/installer/SoFiA/build/lib.linux-x86_64-2.7"
 export SOFIA_PIPELINE_PATH="/installer/SoFiA/sofia_pipeline.py"
 export PATH="$PATH:/installer/SoFiA:/installer/SoFiA/gui"
 export PATH=/software/pink/pink-2018/bin:$PATH
+export PATH=$SOFTWARE_PATH/Montage/bin:$PATH
+export PATH="/anaconda3/bin:$PATH"
+export PATH=$SOFTWARE_PATH/pink/bin:$PATH
 export LC_ALL=C
+
+
 
 %setup
 cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
@@ -53,7 +58,7 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	pip3 install scipy astropy configobj sqlalchemy hips
 
 	# Additional packages installed via pip can be added here.
-	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro numba WCSAxes docopt mpld3 astroML astroML_addons healpy pyvo nway sep theano tensorflow keras h5py scikit-plot montage-wrapper emcee scikit-image corner kapteyn pyspark
+	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro numba WCSAxes docopt mpld3 astroML astroML_addons healpy pyvo nway sep theano tensorflow keras h5py scikit-plot  emcee scikit-image corner kapteyn pyspark
 
 	# Install Java runtime environment and accept the license agreement via debconf
 	 add-apt-repository -y ppa:webupd8team/java
@@ -138,6 +143,9 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	cd Montage
 	make
 
+	# Install montage-wrapper
+	pip install montage-wrapper
+
 
 	# SED fitting software, e.g. CIGALE : http://cigale.lam.fr
 	pip3 install astropy numpy scipy sqlalchemy matplotlib configobj
@@ -175,43 +183,44 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	cd $INSTALLER_PATH
 	mkdir -p lsst_stack
 	cd lsst_stack
-	curl -OL https://raw.githubusercontent.com/lsst/lsst/14.0/scripts/newinstall.sh
+	wget https://raw.githubusercontent.com/lsst/lsst/14.0/scripts/newinstall.sh
 	bash newinstall.sh -ct
 	source loadLSST.bash
 
 	#Installation of Anaconda
 	cd $INSTALLER_PATH
 	wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
-	bash Anaconda3-5.0.1-Linux-x86_64.sh -b -p /anaconda
+	bash Anaconda3-5.0.1-Linux-x86_64.sh -b -p /anaconda3
 	rm Anaconda3-5.0.1-Linux-x86_64.sh
-	echo 'export PATH="/anaconda3/bin:$PATH"' >> ~/.bashrc
-	source .bashrc
+	#echo 'export PATH="/anaconda3/bin:$PATH"' >> ~/.bashrc
+	#source .bashrc
 	conda update conda
 
 	#Anaconda install related packages
 	conda install -c astropy astroquery astroplan ccdproc  ginga  glueviz  photutils  pydl  pyregion  regions  reproject  specutils
 
 	#Installation of eazy-photoz
+	cd $INSTALLER_PATH
 	git clone https://github.com/gbrammer/eazy-photoz.git eazy-photoz
 	cd eazy-photoz/src
 	make
 
-	#Installation of Mega-physics
-	wget http://www.iap.fr/magphys/ewExternalFiles/CB07_libraries.tar.gz
-	tar -xzf CB07_libraries.tar.gz
-
 	# Installation of PINK
 	apt-get install -y doxygen wget vim apt-utils gcc make cmake build-essential
-	mv /pink-180313.tgz?dl=0 /INSTALLER_PATH
-	cd /vINSTALLER_PATH
+	mv /pink-180313.tgz?dl=0 /$INSTALLER_PATH
+	cd /$INSTALLER_PATH
 	tar xfv pink-180313.tgz?dl=0
 	cd pink/pink-2018
+
 	#remove the already build folder from mattia
 	rm -rf build
+
 	mkdir build
 	cd build
-	cmake -DCMAKE_INSTALL_PREFIX=/INSTALLER_PATH/pink/pink-2018 ..
+	mkdir $SOFTWARE_PATH/pink/
+	cmake -DCMAKE_INSTALL_PREFIX=/$SOFTWARE_PATH/pink/ ..
 	make -j 2
+	make install
 
 	# Create /users to bind home directories into the container.
   mkdir -p /users /scratch /data
