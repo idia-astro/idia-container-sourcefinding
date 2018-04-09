@@ -42,8 +42,7 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 
 	apt-get install -y cassbeam python-qwt5-qt4 python-qwt5-doc tempo purify casacore-dev casacore-doc casacore-tools casarest casacore-data meqtrees-timba python-purr python-tigger python-meqtrees-cattery python-owlcat python-kittens python-pyxis python-meqtrees-timba rpfits meqtrees libmeqtrees-timba0 aoflagger wsclean sagecal mt-imager oskar python-casacore python-attrdict python-montblanc python-pymoresane obit parseltongue libcasasynthesis-dev libcasasynthesis1 libspdlog-dev libcasa-casa2 libcasa-coordinates2 libcasa-derivedmscal2 libcasa-fits2 libcasa-images2 libcasa-lattices2 libcasa-meas2 libcasa-measures2 libcasa-mirlib2 libcasa-ms2 libcasa-msfits2 libcasa-python2 libcasa-python3-2 libcasa-scimath-f2 libcasa-scimath2 libcasa-tables2 python3-casacore psrcat presto tempo2 texlive-fonts-recommended dialog
 	apt-get install -y sigproc psrchive multinest dspsr python-presto python-sourcery singularity-container chgcentre python-tkp libsopt-dev libsopt2.0 libpurify-dev libpurify2.0 aoflagger-dev libaoflagger0 libwsclean0 wsclean-dev python-katversion python-katpoint python-katdal python-rfimasker simfast21 dysco 21cmfast libapplcommon libawimager2lib libbbscontrol libbbskernel libblob libcommon libdocker libdppp-aoflag libdppp libelementresponse liblmwcommon liblofar-pyparameterset liblofar-pyparmdb liblofar-pystationresponse
-	apt-get install -y liblofar-pytools liblofarft liblofarstman libmessagebus libms libmslofar libparmdb libplc libpythondppp libspwcombine libstationresponse libtransport lofar-dev lofar-doc python-lofar stimela msutils simms casalite cub-dev python-transitions python3-transitions python-scatterbrane tmv-dev tmv0 galsim-dev galsim0 galsim python-galsim drive-casa sigpyproc tirific karma aips python3.6 qt5-default
-
+	apt-get install -y liblofar-pytools liblofarft liblofarstman libmessagebus libms libmslofar libparmdb libplc libpythondppp libspwcombine libstationresponse libtransport lofar-dev lofar-doc python-lofar stimela msutils simms casalite cub-dev python-transitions python3-transitions python-scatterbrane tmv-dev tmv0 galsim-dev galsim0 galsim python-galsim drive-casa sigpyproc tirific karma aips python3.6 qt5-default dvipng texlive-latex-extra
 	# A corruption occurs with texlive and removing this file fixes the problem.
 	rm /var/lib/dpkg/info/texlive-fonts-recommended.list
 
@@ -58,8 +57,8 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	pip3 install scipy astropy configobj sqlalchemy hips
 
 	# Additional packages installed via pip can be added here.
-	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn ginga glue pymoc pyregion astroquery pyro numba WCSAxes docopt mpld3 astroML astroML_addons healpy pyvo nway sep theano tensorflow keras h5py scikit-plot  emcee scikit-image corner kapteyn pyspark
-
+	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn glue pymoc pyregion astroquery pyro numba WCSAxes docopt mpld3 astroML astroML_addons healpy pyvo nway sep theano tensorflow keras h5py scikit-plot  emcee scikit-image corner kapteyn pyspark
+	
 	# Install Java runtime environment and accept the license agreement via debconf
 	 add-apt-repository -y ppa:webupd8team/java
 	 apt-get update
@@ -156,7 +155,13 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	cd cigale-*
 	python3 setup.py build
 	python3 setup.py develop
-
+	
+	#Installation of Ginga
+	cd $INSTALLER_PATH
+	git clone https://github.com/ejeschke/ginga.git
+	cd ginga
+	python setup.py build
+	python setup.py install
 
 	# Install Scikits-bootstrap
 	cd $INSTALLER_PATH
@@ -178,26 +183,29 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 
 	# GPz - https://github.com/OxfordML/GPz
 	git clone https://github.com/OxfordML/GPz $SOFTWARE_PATH/GPz
+	
+        # upgrade matplotlib
+	pip install --upgrade matplotlib
 
 	#Intsallation of lsst
-	cd $INSTALLER_PATH
-	mkdir -p lsst_stack
-	cd lsst_stack
-	wget https://raw.githubusercontent.com/lsst/lsst/14.0/scripts/newinstall.sh
-	bash newinstall.sh -ct
-	source loadLSST.bash
+	#cd $INSTALLER_PATH
+	#mkdir -p lsst_stack
+	#cd lsst_stack
+	#wget https://raw.githubusercontent.com/lsst/lsst/14.0/scripts/newinstall.sh
+	#bash newinstall.sh -ct
+	#source loadLSST.bash
 
 	#Installation of Anaconda
-	cd $INSTALLER_PATH
-	wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
-	bash Anaconda3-5.0.1-Linux-x86_64.sh -b -p /anaconda3
-	rm Anaconda3-5.0.1-Linux-x86_64.sh
+	#cd $INSTALLER_PATH
+	#wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+	#bash Anaconda3-5.1.0-Linux-x86_64.sh -b -p /anaconda3
+	#rm Anaconda3-5.1.0-Linux-x86_64.sh
 	#echo 'export PATH="/anaconda3/bin:$PATH"' >> ~/.bashrc
 	#source .bashrc
-	conda update conda
+	#conda update conda
 
 	#Anaconda install related packages
-	conda install -c astropy astroquery astroplan ccdproc  ginga  glueviz  photutils  pydl  pyregion  regions  reproject  specutils
+	#conda install -c astropy astroquery astroplan ccdproc  ginga  glueviz  photutils  pydl  pyregion  regions  reproject  specutils
 
 	#Installation of eazy-photoz
 	cd $INSTALLER_PATH
@@ -206,21 +214,21 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	make
 
 	# Installation of PINK
-	apt-get install -y doxygen wget vim apt-utils gcc make cmake build-essential
-	mv /pink-180313.tgz?dl=0 /$INSTALLER_PATH
-	cd /$INSTALLER_PATH
-	tar xfv pink-180313.tgz?dl=0
-	cd pink/pink-2018
+	#apt-get install -y doxygen wget vim apt-utils gcc make cmake build-essential
+	#mv /pink-180313.tgz?dl=0 /$INSTALLER_PATH
+	#cd /$INSTALLER_PATH
+	#tar xfv pink-180313.tgz?dl=0
+	#cd pink/pink-2018
 
 	#remove the already build folder from mattia
-	rm -rf build
+	#rm -rf build
 
-	mkdir build
-	cd build
-	mkdir $SOFTWARE_PATH/pink/
-	cmake -DCMAKE_INSTALL_PREFIX=/$SOFTWARE_PATH/pink/ ..
-	make -j 2
-	make install
+	#mkdir build
+	#cd build
+	#mkdir $SOFTWARE_PATH/pink/
+	#cmake -DCMAKE_INSTALL_PREFIX=/$SOFTWARE_PATH/pink/ ..
+	#make -j 2
+	#make install
 
 	# Create /users to bind home directories into the container.
   mkdir -p /users /scratch /data
@@ -230,10 +238,5 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	apt-get autoclean
 
 %runscript
-if [ $# -eq 0 ]; then
-	echo "The following Python modules are installed in this image:"
-        pip freeze
-        echo "Example usage: sourcefinding.img [command] [args] [options]"
-else
-        exec "$@"
-fi
+#!/bin/sh
+/usr/bin/python "$@"
