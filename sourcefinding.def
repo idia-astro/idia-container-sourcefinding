@@ -58,7 +58,7 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 
 	# Additional packages installed via pip can be added here.
 	pip install atpy sourcery pyfits git+https://github.com/PaulHancock/Aegean.git pandas scikit-learn astroml statsmodels aplpy seaborn glue pymoc pyregion astroquery pyro numba WCSAxes docopt mpld3 astroML astroML_addons healpy pyvo nway sep theano tensorflow keras h5py scikit-plot  emcee scikit-image corner kapteyn pyspark
-	
+
 	# Install Java runtime environment and accept the license agreement via debconf
 	 add-apt-repository -y ppa:webupd8team/java
 	 apt-get update
@@ -155,7 +155,7 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	cd cigale-*
 	python3 setup.py build
 	python3 setup.py develop
-	
+
 	#Installation of Ginga
 	cd $INSTALLER_PATH
 	git clone https://github.com/ejeschke/ginga.git
@@ -183,29 +183,59 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 
 	# GPz - https://github.com/OxfordML/GPz
 	git clone https://github.com/OxfordML/GPz $SOFTWARE_PATH/GPz
-	
-        # upgrade matplotlib
+
+  # upgrade matplotlib
 	pip install --upgrade matplotlib
 
-	#Intsallation of lsst
-	#cd $INSTALLER_PATH
-	#mkdir -p lsst_stack
-	#cd lsst_stack
-	#wget https://raw.githubusercontent.com/lsst/lsst/14.0/scripts/newinstall.sh
-	#bash newinstall.sh -ct
-	#source loadLSST.bash
 
 	#Installation of Anaconda
-	#cd $INSTALLER_PATH
-	#wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
-	#bash Anaconda3-5.1.0-Linux-x86_64.sh -b -p /anaconda3
-	#rm Anaconda3-5.1.0-Linux-x86_64.sh
-	#echo 'export PATH="/anaconda3/bin:$PATH"' >> ~/.bashrc
-	#source .bashrc
-	#conda update conda
+	cd $INSTALLER_PATH
+	wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+	bash Anaconda3-5.1.0-Linux-x86_64.sh -b -p /anaconda3
+	rm Anaconda3-5.1.0-Linux-x86_64.sh
+	export PATH="/anaconda3/bin:$PATH"
+	conda update -y conda
 
 	#Anaconda install related packages
-	#conda install -c astropy astroquery astroplan ccdproc  ginga  glueviz  photutils  pydl  pyregion  regions  reproject  specutils
+	conda install -yc astropy astroquery astroplan ccdproc  ginga  glueviz  photutils  pydl  pyregion  regions  reproject  specutils
+
+	# Installing galfit
+	cd  $SOFTWARE_PATH
+	mkdir galfit/bin
+	wget https://users.obs.carnegiescience.edu/peng/work/galfit/galfit3-debian64.tar.gz -O - | tar -xz
+
+
+	#Installation of eazy-photoz
+	cd $INSTALLER_PATH
+	git clone https://github.com/gbrammer/eazy-photoz.git eazy-photoz
+	cd eazy-photoz/src
+	make
+
+	# Install blobcat
+	cd $INSTALLER_PATH
+	wget http://sourceforge.net/projects/blobcat/files/blobcat-v1.2.tar.bz2
+	tar xvjf blobcat-v1.2.tar.bz2
+	mv blobcat.py  /usr/local/bin/
+	rm -rf blobcat-v1.2.tar.bz2
+
+	#Install Blobcat
+	cd $INSTALLER_PATH
+	git clone https://github.com/lsst/lsstsw.git
+	cd lsstsw
+	./bin/deploy
+	. /$INSTALLER_PATH/lsstsw/bin/setup.sh
+	source bin/setup.sh
+	rebuild lsst_distrib
+	eups tags --clone bNNNN current
+	setup lsst_distrib
+
+	#ROOT installation
+	cd  $INSTALLER_PATH
+	apt-get install xorg
+	wget https://root.cern.ch/download/root_v6.12.06.Linux-ubuntu16-x86_64-gcc5.4.tar.gz
+	tar -zxvf root_v6.12.06.Linux-ubuntu16-x86_64-gcc5.4.tar.gz
+	cd root
+	. bin/thisroot.sh
 
 	#Installation of eazy-photoz
 	cd $INSTALLER_PATH
