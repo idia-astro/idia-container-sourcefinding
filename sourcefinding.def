@@ -4,19 +4,19 @@ OSVersion: xenial
 Include: software-properties-common
 
 %environment
-export PATH=/software/ds9/:$PATH
-export INSTALLER_PATH=/installer
-export SOFTWARE_PATH=/software
-export PUMA_DIR=$INSTALLER_PATH/PUMA
-export PATH=$PUMA_DIR/scripts:$PATH
-export SOFIA_MODULE_PATH="/installer/SoFiA/build/lib.linux-x86_64-2.7"
-export SOFIA_PIPELINE_PATH="/installer/SoFiA/sofia_pipeline.py"
-export PATH="$PATH:/installer/SoFiA:/installer/SoFiA/gui"
-export PATH=/software/pink/pink-2018/bin:$PATH
-export PATH=$SOFTWARE_PATH/Montage/bin:$PATH
-export PATH="/anaconda3/bin:$PATH"
-export PATH=$SOFTWARE_PATH/pink/bin:$PATH
-export LC_ALL=C
+	export PATH=/software/ds9/:$PATH
+	export INSTALLER_PATH=/installer
+	export SOFTWARE_PATH=/software
+	export PUMA_DIR=$INSTALLER_PATH/PUMA
+	export PATH=$PUMA_DIR/scripts:$PATH
+	export SOFIA_MODULE_PATH="/installer/SoFiA/build/lib.linux-x86_64-2.7"
+	export SOFIA_PIPELINE_PATH="/installer/SoFiA/sofia_pipeline.py"
+	export PATH="$PATH:/installer/SoFiA:/installer/SoFiA/gui"
+	export PATH=/software/pink/pink-2018/bin:$PATH
+	export PATH=$SOFTWARE_PATH/Montage/bin:$PATH
+	export PATH="/anaconda3/bin:$PATH"
+	export PATH=$SOFTWARE_PATH/pink/bin:$PATH
+	export LC_ALL=C
 
 
 
