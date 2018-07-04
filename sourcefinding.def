@@ -28,16 +28,16 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	# Create Installation Directories and export paths. This is needed as part of post.
 	# %environment scriptlet does not define these paths during %post, only after.
 	mkdir -p /software/ /installer
-  export INSTALLER_PATH=/installer
-  export SOFTWARE_PATH=/software
+  	export INSTALLER_PATH=/installer
+  	export SOFTWARE_PATH=/software
 
 	# Installation of the KERN2 packages
 	apt-get update -y
 	apt-get install -y wget vim apt-utils git
 	add-apt-repository -s ppa:kernsuite/kern-2
 	add-apt-repository ppa:jonathonf/python-3.6
-  apt-add-repository multiverse
-  apt-add-repository restricted
+  	apt-add-repository multiverse
+  	apt-add-repository restricted
 	apt-get update -y
 
 	apt-get install -y cassbeam python-qwt5-qt4 python-qwt5-doc tempo purify casacore-dev casacore-doc casacore-tools casarest casacore-data meqtrees-timba python-purr python-tigger python-meqtrees-cattery python-owlcat python-kittens python-pyxis python-meqtrees-timba rpfits meqtrees libmeqtrees-timba0 aoflagger wsclean sagecal mt-imager oskar python-casacore python-attrdict python-montblanc python-pymoresane obit parseltongue libcasasynthesis-dev libcasasynthesis1 libspdlog-dev libcasa-casa2 libcasa-coordinates2 libcasa-derivedmscal2 libcasa-fits2 libcasa-images2 libcasa-lattices2 libcasa-meas2 libcasa-measures2 libcasa-mirlib2 libcasa-ms2 libcasa-msfits2 libcasa-python2 libcasa-python3-2 libcasa-scimath-f2 libcasa-scimath2 libcasa-tables2 python3-casacore psrcat presto tempo2 texlive-fonts-recommended dialog
@@ -261,7 +261,7 @@ cp ../../pink-180313.tgz?dl=0 $SINGULARITY_ROOTFS
 	#make install
 
 	# Create /users to bind home directories into the container.
-  mkdir -p /users /scratch /data
+  	mkdir -p /users /scratch /data
 
 	# Cleanup the container
 	apt-get clean
