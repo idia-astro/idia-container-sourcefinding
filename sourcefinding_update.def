@@ -1,0 +1,12 @@
+Bootstrap: localimage
+From: /mnt/jeremy/containers/sourcefinding_update/sourcefinding-dev.simg
+Include: software-properties-common
+
+%post
+        apt-get update -y
+
+        pip install lmfit --upgrade
+		
+	# Cleanup
+        apt-get clean
+        apt-get autoclean
