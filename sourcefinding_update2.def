@@ -1,0 +1,27 @@
+Bootstrap: localimage
+From: sourcefinding-dev-2018-12-05.simg
+Include: software-properties-common
+
+%environment
+
+        export PYTHONPATH=$PYTHONPATH:$SOFTWARE_PATH/pyrmsynth/rm_tools
+        export PATH=$PATH:$SOFTWARE_PATH/pyrmsynth
+
+%post
+        export INSTALLER_PATH=/installer
+	export SOFTWARE_PATH=/software 
+	
+        # Install libraries for pyrmsynth
+        apt-get install -y libgsl-dev
+        pip install cython
+
+        cd $SOFTWARE_PATH
+        git clone https://github.com/mrbell/pyrmsynth.git
+        cd pyrmsynth/rm_tools
+        python setup.py build_ext --inplace
+        cd ..
+        chmod ugo+x rmsynthesis.py
+   
+        # Cleanup
+        apt-get clean
+        apt-get autoclean

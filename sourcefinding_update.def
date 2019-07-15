@@ -1,5 +1,5 @@
 Bootstrap: localimage
-From: /mnt/jeremy/containers/sourcefinding_update/sourcefinding-dev.simg
+From: sourcefinding-dev.simg
 Include: software-properties-common
 
 %post
